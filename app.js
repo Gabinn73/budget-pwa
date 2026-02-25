@@ -239,6 +239,12 @@ window.addEventListener("DOMContentLoaded", () => {
   initSelects();
 
   $("btnLock")?.addEventListener("click", () => setLocked(true));
+// Catégorie par défaut
+$("txType")?.addEventListener("change", () => {
+  const t = $("txType")?.value;
+  if (t === "revenu") $("txCategory").value = "Revenus";
+  if (t === "depense" && $("txCategory").value === "Revenus") $("txCategory").value = "Transport";
+});
 
   $("btnUnlock")?.addEventListener("click", () => {
     const pin = $("pinInput")?.value || "";
@@ -284,12 +290,7 @@ window.addEventListener("DOMContentLoaded", () => {
     $("txAmount")?.focus();
   });
 
-// Catégorie par défaut
-$("txType")?.addEventListener("change", () => {
-  const t = $("txType")?.value;
-  if (t === "revenu") $("txCategory").value = "Revenus";
-  if (t === "depense" && $("txCategory").value === "Revenus") $("txCategory").value = "Transport";
-});
+  $("btnAddTx")?.addEventListener("click", () => {
     const dateISO = $("txDate")?.value || todayISO();
     const ym = ymFromISO(dateISO);
 
