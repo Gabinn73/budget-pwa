@@ -284,7 +284,12 @@ window.addEventListener("DOMContentLoaded", () => {
     $("txAmount")?.focus();
   });
 
-  $("btnAddTx")?.addEventListener("click", () => {
+// Catégorie par défaut
+$("txType")?.addEventListener("change", () => {
+  const t = $("txType")?.value;
+  if (t === "revenu") $("txCategory").value = "Revenus";
+  if (t === "depense" && $("txCategory").value === "Revenus") $("txCategory").value = "Transport";
+});
     const dateISO = $("txDate")?.value || todayISO();
     const ym = ymFromISO(dateISO);
 
