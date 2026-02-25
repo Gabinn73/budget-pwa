@@ -436,4 +436,49 @@ function renderTxList() {
 }
 
 function renderRecurring() {
-  const
+  const ul = $("recurringList");
+  ul.innerHTML = "";
+
+  state.recurring.forEach(r => {
+    const li = document.createElement("li");
+    const windowTxt = `J${r.dayMin}→J${r.dayMax}`;
+    let amountTxt = "";
+    if (r.approxType === "range") amountTxt = `${r.rangeMin}–${r.rangeMax} € (range)`;
+    else if (r.approxType === "approx") amountTxt = `~${r.montantSaisi} € (approx)`;
+    else amountTxt = `${r.montantSaisi} €`;
+
+    li.innerHTML = `
+      <div>
+        <div>${escapeHtml(r.libelle)} <span class="tag">• ${r.categorie} • ${windowTxt}</span></div>
+        <div class="tag">${amountTxt}</div>
+      </div>
+      <div></div>
+    `;
+    ul.appendChild(li);
+  });
+}
+
+function renderAll() {
+  initDefaults();
+  renderDashboard();
+  renderTxList();
+  renderRecurring();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (m) => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+// ======================
+// Start
+// ======================
+
+initSelects();
+bindEvents();
+
+if (state.locked) setLocked(true);
+else setLocked(false);
+
+renderAll();
